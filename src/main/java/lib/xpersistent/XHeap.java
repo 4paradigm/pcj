@@ -37,7 +37,7 @@ import sun.misc.Unsafe;
 
 public class XHeap implements PersistentHeap {
     static {
-        System.loadLibrary("Persistent");
+        Util.loadLibrary();
         try {
             java.lang.reflect.Field f = Unsafe.class.getDeclaredField("theUnsafe");
             f.setAccessible(true);

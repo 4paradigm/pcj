@@ -25,11 +25,12 @@ import lib.util.persistent.TransactionCore;
 import lib.util.persistent.TransactionException;
 import lib.util.persistent.PersistenceException;
 import lib.util.persistent.spi.PersistentMemoryProvider;
+import lib.util.persistent.Util;
 
 public class XTransaction implements TransactionCore {
 
     static {
-        System.loadLibrary("Persistent");
+        Util.loadLibrary();
         lib.util.persistent.spi.PersistentMemoryProvider.getDefaultProvider().getHeap().open();
     }
 

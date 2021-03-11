@@ -21,6 +21,7 @@
 CC = g++
 JAVAC = $(JAVA_HOME)/bin/javac 
 JAVA = $(JAVA_HOME)/bin/java 
+JAR = $(JAVA_HOME)/bin/jar
 JAVADOC = $(JAVA_HOME)/bin/javadoc
 
 JNI_INCLUDES = $(JAVA_HOME)/include $(JAVA_HOME)/include/linux
@@ -42,6 +43,8 @@ CPP_BUILD_DIR = $(TARGET_DIR)/cppbuild
 CLASSES_DIR = $(TARGET_DIR)/classes
 TEST_CLASSES_DIR = $(TARGET_DIR)/test_classes
 
+JAR_NATIVE_DIR = $(CLASSES_DIR)/lib/linux/amd64
+
 BASE_CLASSPATH = $(CLASSES_DIR):lib:src:lib/ST-4.0.8.jar:
 
 ALL_CPP_SOURCES = $(wildcard $(CPP_SOURCE_DIR)/*.cpp)
@@ -60,6 +63,9 @@ all: sources examples testsources
 sources: cpp java
 cpp: $(LIBRARIES)
 java: classes
+
+jar: sources
+	$(JAR) cvf $(TARGET_DIR)/pcj.jar -C $(CLASSES_DIR) lib
 
 examples: sources
 	# $(foreach example_dir,$(ALL_EXAMPLE_DIRS), $(JAVAC) $(JAVAFLAGS) -cp $(BASE_CLASSPATH):$(example_dir) $(example_dir)/*.java;)
@@ -95,6 +101,8 @@ classes: | $(CLASSES_DIR)
 
 $(CPP_BUILD_DIR)/%.so: $(ALL_OBJ)
 	$(CC) -Wl,-soname,$@ -o $@ $(ALL_OBJ) $(LINK_FLAGS)
+	mkdir -p $(JAR_NATIVE_DIR)
+	cp $@ $(JAR_NATIVE_DIR)
 
 $(CPP_BUILD_DIR)/%.o: $(CPP_SOURCE_DIR)/%.cpp
 ifndef JAVA_HOME

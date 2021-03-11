@@ -22,13 +22,14 @@
 package lib.xpersistent;
 
 import lib.util.persistent.MemoryRegion;
+import lib.util.persistent.Util;
 
 public class UncheckedPersistentMemoryRegion implements MemoryRegion {
     private long addr;
     long directAddress;
 
     static {
-        System.loadLibrary("Persistent");
+        Util.loadLibrary();
     }
 
     // TODO: should not be public
